@@ -1,0 +1,17 @@
+#lang racket
+(define (cont-frac n d k)
+  (define (iter i result)
+    (if (> i 0)
+        (iter (- i 1)
+              (/ (n i)
+                 (+ (d i) result)))
+        result))
+  (iter k 0))
+
+(define (D i)
+  (cond ((= i 1) 1)
+        ((= i 2) 2)
+        ((= (remainder (- i 5) 3) 0)
+         (let ((mid (/ (- i 5) 3)))
+           (+ 4 (* mid 2))))
+        (else 1)))
