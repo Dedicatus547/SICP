@@ -1,0 +1,28 @@
+(load "std.scm")
+
+(define (queens board-size)
+    (define (queen-cols k)
+        (if (= k 0)
+            (list empty-board)
+            (filter (lambda (positions) (safe? k positions))
+                (flatmap 
+                    (lambda (rest-of-queens)
+                        (map (lambda (new-row)
+                                (adjoin-position new-row k rest-of-queens))
+                            (enumerate-interval 1 board-size)))
+                    (queen-cols (- k 1))))))
+    (queen-cols board-size))
+
+(define empty-board (list))
+(define (adjoin-position new-row k rest-of-queens)
+    (cons new-row rest-of-queens))
+(define (safe? k positions)
+    (accumulate (lambda (a b) (and a b)) true
+        (map (lambda (xx pos) 
+                (not (unsafe? k (car positions) (- k xx) pos)))
+            (enumerate-interval 1 (- k 1))
+            (cdr positions))))
+(define (unsafe? kx ky x y)
+    (or (= ky y)
+        (= (+ kx ky) (+ x y))
+        (= (- ky y) (- kx x))))
