@@ -1,0 +1,10 @@
+(define (list-equal? a b)
+    (cond ((and (null? a) (null? b)) true)
+        ((and (not (null? a)) (not (null? b)))
+         (and (eq? (car a) (car b)) (list-equal? (cdr a) (cdr b))))
+        (else false)))
+
+(define (myequal? a b)
+    (cond ((and (pair? a) (pair? b)) (list-equal? a b))
+        ((and (not (pair? a)) (not (pair? b))) (eq? a b))
+        (else false)))
